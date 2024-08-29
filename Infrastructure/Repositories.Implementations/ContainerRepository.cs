@@ -8,12 +8,13 @@ namespace Infrastructure.Repositories.Implementations;
 
 public class ContainerRepository(DbContext context) : IContainerRepository
 {
+    // todo: add GetByOrderId method
     public async Task<Container> GetContainerLocation(Container container)
     {
-        var result = await context.Set<Container>()
+        var existingContainer = await context.Set<Container>()
             .FirstOrDefaultAsync(x => x.Id == container.Id);
-        if(result != null)
-            return result;
+        if(existingContainer != null)
+            return existingContainer;
 
         throw new InfrastructureException
         {
@@ -25,21 +26,21 @@ public class ContainerRepository(DbContext context) : IContainerRepository
 
     public async Task<List<Container>> GetContainersListLocation(List<Container> containers)
     {
-        var result = await context.Set<Container>()
+        var existingContainers = await context.Set<Container>()
             .Where(x => containers.Select(e => e.Id).Contains(x.Id)).ToListAsync();
         
-        return result;
+        return existingContainers;
     }
 
     public async Task<Container> UpdateContainerLocation(Container container)
     {
-        var result = await context.Set<Container>().FirstOrDefaultAsync(x => x.Id == container.Id);
-        if (result != null)
+        var existingContainer = await context.Set<Container>().FirstOrDefaultAsync(x => x.Id == container.Id);
+        if (existingContainer != null)
         {
-            // todo: add not updating fields
-            context.Entry(result).CurrentValues.SetValues(container);
-            await context.SaveChangesAsync();
-            return result;
+            await context.Set<Container>().Where(x => x.Id == container.Id)
+                .ExecuteUpdateAsync(s => s
+                    .SetProperty(p => p.Latitude, container.Latitude)
+                    .SetProperty(p => p.Longitude, container.Longitude));
         }
         
         throw new InfrastructureException
@@ -49,17 +50,47 @@ public class ContainerRepository(DbContext context) : IContainerRepository
             StatusCode = StatusCodes.Status404NotFound
         };
     }
-    
-    public async Task CreateOrUpdateContainersAsync(List<Container> containers, Guid orderId)
+
+    public async Task<List<Container>> UpdateContainersListLocation(List<Container> containers)
+    {
+        var existingContainers = await context.Set<Container>()
+            .Where(x => containers.Select(e => e.Id).Contains(x.Id)).ToListAsync();
+        if (existingContainers.Count == containers.Count)
+        {
+            UpdateLocationFields(containers, existingContainers);
+            await context.SaveChangesAsync();
+        }
+        
+        throw new InfrastructureException
+        {
+            Title = "One or more containers not found",
+            Message = "One or more containers with this id not found",
+            StatusCode = StatusCodes.Status404NotFound
+        };
+    }
+
+    public async Task CreateContainersAsync(List<Container> containers, Guid orderId)
     {
         var existingContainers = await context.Set<Container>()
             .Where(x => containers.Select(e => e.Id).Contains(x.Id) || x.OrderId == orderId).ToListAsync();
         if (existingContainers.Count != 0)
             context.RemoveRange(existingContainers);
-        await context.Set<Container>().AddRangeAsync(containers);
-        await context.SaveChangesAsync();
         
         await context.Set<Container>().AddRangeAsync(containers);
+        await context.SaveChangesAsync();
+    }
+
+    public async Task UpdateContainersAsync(List<Container> containers, Guid orderId)
+    {
+        var uselessContainers = await context.Set<Container>()
+            .Where(x => !containers.Select(e => e.Id).Contains(x.Id) && x.OrderId == orderId).ToListAsync();
+        if (uselessContainers.Count != 0)
+            context.RemoveRange(uselessContainers);
+
+        var existingContainers = await context.Set<Container>()
+            .Where(x => containers.Select(e => e.Id).Contains(x.Id) || x.OrderId == orderId).ToListAsync();
+        var newContainers = existingContainers.Where(x => !containers.Select(e => e.Id).Contains(x.Id)).ToList();
+        await context.Set<Container>().AddRangeAsync(newContainers);
         await context.SaveChangesAsync();
     }
 
@@ -69,5 +100,17 @@ public class ContainerRepository(DbContext context) : IContainerRepository
             .Where(x => containers.Select(e => e.Id).Contains(x.Id) || x.OrderId == orderId).ToListAsync();
         if (existingContainers.Count != 0)
             context.RemoveRange(existingContainers);
+    }
+    
+    
+    
+    private void UpdateLocationFields(List<Container> containers, List<Container> containersInDb)
+    {
+        foreach (var containerInDb in containersInDb)
+        {
+            containerInDb.Latitude = containers.FirstOrDefault(x => x.Id == containerInDb.Id)!.Latitude;
+            containerInDb.Longitude = containers.FirstOrDefault(x => x.Id == containerInDb.Id)!.Longitude;
+            containerInDb.LastUpdateTime = DateTime.UtcNow;
+        }
     }
 }

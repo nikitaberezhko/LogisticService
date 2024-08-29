@@ -7,12 +7,10 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <Folder Include="Bus.Implementations\" />
-    </ItemGroup>
-
-    <ItemGroup>
+      <PackageReference Include="BusModels" Version="1.0.0" />
       <PackageReference Include="EntityFramework" Version="6.5.1" />
       <PackageReference Include="Exceptions.Contracts" Version="1.0.0" />
+      <PackageReference Include="MassTransit" Version="8.2.5" />
       <PackageReference Include="Microsoft.AspNetCore.Http" Version="2.2.2" />
       <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="8.0.8" />
     </ItemGroup>
