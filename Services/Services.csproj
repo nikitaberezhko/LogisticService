@@ -8,14 +8,12 @@
 
     <ItemGroup>
       <Folder Include="Bus.Interfaces\" />
-      <Folder Include="Mapper\" />
-      <Folder Include="Models\" />
-      <Folder Include="Services.Implementations\" />
       <Folder Include="Services.Interfaces\" />
       <Folder Include="Validation\" />
     </ItemGroup>
 
     <ItemGroup>
+      <PackageReference Include="AutoMapper" Version="13.0.1" />
       <PackageReference Include="EntityFramework" Version="6.5.1" />
       <PackageReference Include="Exceptions.Contracts" Version="1.0.0" />
       <PackageReference Include="Microsoft.AspNetCore.Http" Version="2.2.2" />

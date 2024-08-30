@@ -8,6 +8,8 @@ public interface IContainerRepository
 
     Task<List<Container>> GetContainersListLocation(List<Container> containers);
 
+    Task<List<Container>> GetContainersListByOrderId(Guid orderId);
+
     Task<Container> UpdateContainerLocation(Container container);
 
     Task<List<Container>> UpdateContainersListLocation(List<Container> containers);
