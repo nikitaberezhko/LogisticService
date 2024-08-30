@@ -8,7 +8,6 @@ namespace Infrastructure.Repositories.Implementations;
 
 public class ContainerRepository(DbContext context) : IContainerRepository
 {
-    // todo: add GetByOrderId method
     public async Task<Container> GetContainerLocation(Container container)
     {
         var existingContainer = await context.Set<Container>()
@@ -29,6 +28,13 @@ public class ContainerRepository(DbContext context) : IContainerRepository
         var existingContainers = await context.Set<Container>()
             .Where(x => containers.Select(e => e.Id).Contains(x.Id)).ToListAsync();
         
+        return existingContainers;
+    }
+    
+    public async Task<List<Container>> GetContainersListByOrderId(Guid orderId)
+    {
+        var existingContainers = await context.Set<Container>()
+            .Where(x => x.OrderId == orderId).ToListAsync();
         return existingContainers;
     }
 
