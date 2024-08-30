@@ -4,15 +4,15 @@ namespace Services.Repositories.Interfaces;
 
 public interface IContainerRepository
 {
-    Task<Container> GetContainerLocation(Container container);
+    Task<Container> GetLocationAsync(Container container);
 
-    Task<List<Container>> GetContainersListLocation(List<Container> containers);
+    Task<List<Container>> GetContainersLocationAsync(List<Container> containers);
 
-    Task<List<Container>> GetContainersListByOrderId(Guid orderId);
+    Task<List<Container>> GetContainersLocationByOrderIdAsync(Guid orderId);
 
-    Task<Container> UpdateContainerLocation(Container container);
+    Task<Container> UpdateLocationAsync(Container container);
 
-    Task<List<Container>> UpdateContainersListLocation(List<Container> containers);
+    Task<List<Container>> UpdateContainersLocationAsync(List<Container> containers);
 
     Task CreateContainersAsync(List<Container> containers, Guid orderId);
 

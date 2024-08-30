@@ -8,7 +8,7 @@ namespace Infrastructure.Repositories.Implementations;
 
 public class ContainerRepository(DbContext context) : IContainerRepository
 {
-    public async Task<Container> GetContainerLocation(Container container)
+    public async Task<Container> GetLocationAsync(Container container)
     {
         var existingContainer = await context.Set<Container>()
             .FirstOrDefaultAsync(x => x.Id == container.Id);
@@ -23,7 +23,7 @@ public class ContainerRepository(DbContext context) : IContainerRepository
         };
     }
 
-    public async Task<List<Container>> GetContainersListLocation(List<Container> containers)
+    public async Task<List<Container>> GetContainersLocationAsync(List<Container> containers)
     {
         var existingContainers = await context.Set<Container>()
             .Where(x => containers.Select(e => e.Id).Contains(x.Id)).ToListAsync();
@@ -31,14 +31,14 @@ public class ContainerRepository(DbContext context) : IContainerRepository
         return existingContainers;
     }
     
-    public async Task<List<Container>> GetContainersListByOrderId(Guid orderId)
+    public async Task<List<Container>> GetContainersLocationByOrderIdAsync(Guid orderId)
     {
         var existingContainers = await context.Set<Container>()
             .Where(x => x.OrderId == orderId).ToListAsync();
         return existingContainers;
     }
 
-    public async Task<Container> UpdateContainerLocation(Container container)
+    public async Task<Container> UpdateLocationAsync(Container container)
     {
         var existingContainer = await context.Set<Container>().FirstOrDefaultAsync(x => x.Id == container.Id);
         if (existingContainer != null)
@@ -57,7 +57,7 @@ public class ContainerRepository(DbContext context) : IContainerRepository
         };
     }
 
-    public async Task<List<Container>> UpdateContainersListLocation(List<Container> containers)
+    public async Task<List<Container>> UpdateContainersLocationAsync(List<Container> containers)
     {
         var existingContainers = await context.Set<Container>()
             .Where(x => containers.Select(e => e.Id).Contains(x.Id)).ToListAsync();
