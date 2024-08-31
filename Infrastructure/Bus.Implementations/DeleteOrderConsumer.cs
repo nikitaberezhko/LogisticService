@@ -7,7 +7,7 @@ using Services.Repositories.Interfaces;
 namespace Infrastructure.Bus.Implementations;
 
 public class DeleteOrderConsumer(
-    IContainerRepository containerRepository,
+    ILocationRepository locationRepository,
     ILogger<DeleteOrderConsumer> logger) : IConsumer<OrderDeletedMessage>
 {
     public async Task Consume(ConsumeContext<OrderDeletedMessage> context)
@@ -15,7 +15,7 @@ public class DeleteOrderConsumer(
         var containerIds = context.Message.ContainerIds;
         var orderId = context.Message.OrderId;
         
-        await containerRepository.DeleteContainersAsync(
+        await locationRepository.DeleteContainersAsync(
             containers: containerIds.Select(id => new Container { Id = id, OrderId = orderId }).ToList(),
             orderId: orderId);
         

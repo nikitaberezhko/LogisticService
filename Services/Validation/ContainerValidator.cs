@@ -8,7 +8,7 @@ namespace Services.Validation;
 public class ContainerValidator(
     IValidator<GetLocationModel> getLocationValidator,
     IValidator<GetContainersLocationModel> getContainersLocationValidator,
-    IValidator<GetContainersByOrderIdModel> getContainersByOrderIdValidator,
+    IValidator<GetContainersLocationByOrderIdModel> getContainersByOrderIdValidator,
     IValidator<UpdateLocationModel> updateLocationValidator,
     IValidator<UpdateContainersLocationModel> updateContainersLocationValidator)
 {
@@ -30,7 +30,7 @@ public class ContainerValidator(
         return true;
     }
     
-    public async Task<bool> ValidateAsync(GetContainersByOrderIdModel model)
+    public async Task<bool> ValidateAsync(GetContainersLocationByOrderIdModel model)
     {
         var validationResult = await getContainersByOrderIdValidator.ValidateAsync(model);
         if (!validationResult.IsValid)

@@ -17,7 +17,7 @@ public class UpdateContainersLocationValidationTests
         _validator = new ContainerValidator(
             new Mock<IValidator<GetLocationModel>>().Object,
             new Mock<IValidator<GetContainersLocationModel>>().Object,
-            new Mock<IValidator<GetContainersByOrderIdModel>>().Object,
+            new Mock<IValidator<GetContainersLocationByOrderIdModel>>().Object,
             new Mock<IValidator<UpdateLocationModel>>().Object,
             Provider.Get<IValidator<UpdateContainersLocationModel>>());  
     }

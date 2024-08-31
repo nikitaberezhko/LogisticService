@@ -3,9 +3,9 @@ using Services.Models.Request;
 
 namespace Services.Validation.Validators;
 
-public class GetContainersByOrderIdValidator : AbstractValidator<GetContainersByOrderIdModel>
+public class GetContainersLocationByOrderIdValidator : AbstractValidator<GetContainersLocationByOrderIdModel>
 {
-    public GetContainersByOrderIdValidator()
+    public GetContainersLocationByOrderIdValidator()
     {
         RuleFor(x => x.OrderId)
             .NotEmpty()

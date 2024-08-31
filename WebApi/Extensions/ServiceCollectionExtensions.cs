@@ -1,6 +1,9 @@
 using Asp.Versioning;
 using FluentValidation;
+using Infrastructure.Bus.Implementations;
 using Infrastructure.Repositories.Implementations;
+using Infrastructure.Settings;
+using MassTransit;
 using Microsoft.EntityFrameworkCore;
 using OpenTelemetry.Metrics;
 using Persistence.EntityFramework;
@@ -43,8 +46,8 @@ public static class ServiceCollectionExtensions
             GetLocationValidator>();
         services.AddScoped<IValidator<GetContainersLocationModel>, 
             GetContainersLocationValidator>();
-        services.AddScoped<IValidator<GetContainersByOrderIdModel>, 
-            GetContainersByOrderIdValidator>();
+        services.AddScoped<IValidator<GetContainersLocationByOrderIdModel>, 
+            GetContainersLocationByOrderIdValidator>();
         services.AddScoped<IValidator<UpdateLocationModel>, 
             UpdateLocationValidator>();
         services.AddScoped<IValidator<UpdateContainersLocationModel>, 
@@ -66,14 +69,57 @@ public static class ServiceCollectionExtensions
     
     public static IServiceCollection AddServices(this IServiceCollection services)
     {
-        services.AddScoped<IContainerService, Services.Services.Implementations.ContainerService>();
+        services.AddScoped<ILocationService, Services.Services.Implementations.LocationService>();
         
         return services;
     }
     
     public static IServiceCollection AddRepositories(this IServiceCollection services)
     {
-        services.AddScoped<IContainerRepository, ContainerRepository>();
+        services.AddScoped<ILocationRepository, LocationRepository>();
+        
+        return services;
+    }
+    
+    public static IServiceCollection ConfigureMassTransit(this IServiceCollection services,
+        IConfiguration configuration)
+    {
+        var rmqSettings = configuration.GetSection("RmqSettings").Get<RmqSettings>();
+        
+        services.AddMassTransit(options =>
+        {
+            options.AddConsumer<CreateOrderConsumer>();
+            options.AddConsumer<UpdateOrderConsumer>();
+            options.AddConsumer<DeleteOrderConsumer>();
+            
+            options.UsingRabbitMq((context, cfg) =>
+            {
+                cfg.Host(rmqSettings.Host, rmqSettings.Vhost, h =>
+                {
+                    h.Username(rmqSettings.Username);
+                    h.Password(rmqSettings.Password);
+                });
+
+                // cfg.ReceiveEndpoint("create-order", e =>
+                // {
+                //     e.ConfigureConsumer<CreateOrderConsumer>(context);
+                //     e.ExchangeType = "fanout";  
+                // });
+                //
+                // cfg.ReceiveEndpoint("update-order", e =>
+                // {
+                //     e.ConfigureConsumer<UpdateOrderConsumer>(context);
+                //     e.ExchangeType = "fanout";  
+                // });
+                //
+                // cfg.ReceiveEndpoint("delete-order", e =>
+                // {
+                //     e.ConfigureConsumer<DeleteOrderConsumer>(context);
+                //     e.ExchangeType = "fanout";  
+                // });
+            });
+
+        });
         
         return services;
     }

@@ -7,16 +7,16 @@ using Xunit;
 
 namespace Tests.ContainerValidatorTests;
 
-public class GetContainersByOrderIdValidationTests
+public class GetContainersLocationByOrderIdValidationTests
 {
     private readonly ContainerValidator _validator;
 
-    public GetContainersByOrderIdValidationTests()
+    public GetContainersLocationByOrderIdValidationTests()
     {
         _validator = new ContainerValidator(
             new Mock<IValidator<GetLocationModel>>().Object,
             new Mock<IValidator<GetContainersLocationModel>>().Object,
-            Provider.Get<IValidator<GetContainersByOrderIdModel>>(),
+            Provider.Get<IValidator<GetContainersLocationByOrderIdModel>>(),
             new Mock<IValidator<UpdateLocationModel>>().Object,
             new Mock<IValidator<UpdateContainersLocationModel>>().Object);    
     }
@@ -25,7 +25,7 @@ public class GetContainersByOrderIdValidationTests
     public async Task ValidateAsync_Should_Be_Valid_With_Valid_Model()
     {
         // Arrange
-        var model = new GetContainersByOrderIdModel
+        var model = new GetContainersLocationByOrderIdModel
         {
             OrderId = Guid.NewGuid()
         };
@@ -41,7 +41,7 @@ public class GetContainersByOrderIdValidationTests
     public async Task ValidateAsync_Should_Throw_ServiceException_If_OrderId_Is_Invalid()
     {
         // Arrange
-        var model = new GetContainersByOrderIdModel
+        var model = new GetContainersLocationByOrderIdModel
         {
             OrderId = Guid.Empty
         };

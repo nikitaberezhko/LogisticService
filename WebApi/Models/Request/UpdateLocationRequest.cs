@@ -1,6 +1,6 @@
 namespace WebApi.Models.Request;
 
-public class UpdateContainerLocationRequest
+public class UpdateLocationRequest
 {
     public Guid Id { get; set; }
     

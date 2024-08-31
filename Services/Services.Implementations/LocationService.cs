@@ -8,16 +8,16 @@ using Services.Validation;
 
 namespace Services.Services.Implementations;
 
-public class ContainerService(
+public class LocationService(
     IMapper mapper,
-    IContainerRepository containerRepository,
-    ContainerValidator validator) : IContainerService
+    ILocationRepository locationRepository,
+    ContainerValidator validator) : ILocationService
 {
     public async Task<ContainerModel> GetLocation(GetLocationModel model)
     {
         await validator.ValidateAsync(model);
         
-        var container = await containerRepository
+        var container = await locationRepository
             .GetLocationAsync(mapper.Map<Container>(model));
         var result = mapper.Map<ContainerModel>(container);
 
@@ -29,7 +29,7 @@ public class ContainerService(
     {
         await validator.ValidateAsync(model);
         
-        var containers = await containerRepository
+        var containers = await locationRepository
             .GetContainersLocationAsync(model.IdsList
                 .Select(id => new Container{ Id = id })
                 .ToList());
@@ -39,11 +39,11 @@ public class ContainerService(
     }
 
     public async Task<List<ContainerModel>> GetContainersLocationByOrderId(
-        GetContainersByOrderIdModel model)
+        GetContainersLocationByOrderIdModel model)
     {
         await validator.ValidateAsync(model);
         
-        var containers = await containerRepository
+        var containers = await locationRepository
             .GetContainersLocationByOrderIdAsync(model.OrderId);
         var result = mapper.Map<List<ContainerModel>>(containers);
         
@@ -54,7 +54,7 @@ public class ContainerService(
     {
         await validator.ValidateAsync(model);
 
-        var container = await containerRepository
+        var container = await locationRepository
             .UpdateLocationAsync(mapper.Map<Container>(model));
         var result = mapper.Map<ContainerModel>(container);
 
@@ -66,7 +66,7 @@ public class ContainerService(
     {
         await validator.ValidateAsync(model);
 
-        var containers = await containerRepository
+        var containers = await locationRepository
             .UpdateContainersLocationAsync(mapper.Map<List<Container>>(model.ContainersList));
         var result = mapper.Map<List<ContainerModel>>(containers);
         

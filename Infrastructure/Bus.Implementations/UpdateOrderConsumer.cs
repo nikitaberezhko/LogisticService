@@ -9,7 +9,7 @@ using Services.Repositories.Interfaces;
 namespace Infrastructure.Bus.Implementations;
 
 public class UpdateOrderConsumer(
-    IContainerRepository containerRepository,
+    ILocationRepository locationRepository,
     IHubApi hubApi,
     ILogger<UpdateOrderConsumer> logger) : IConsumer<OrderUpdatedMessage>
 {
@@ -22,7 +22,7 @@ public class UpdateOrderConsumer(
         var startLocation = 
             await hubApi.GetHubById(new GetHubByIdRequest { Id = newHubId });
         
-        await containerRepository.UpdateContainersAsync(
+        await locationRepository.UpdateContainersAsync(
             containers: containerIds.Select(id => new Container { 
                 Id = id, 
                 OrderId = orderId,

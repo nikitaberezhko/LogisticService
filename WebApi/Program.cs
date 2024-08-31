@@ -1,3 +1,6 @@
+using WebApi.Extensions;
+using WebApi.Middlewares;
+
 namespace WebApi;
 
 public class Program
@@ -5,29 +8,34 @@ public class Program
     public static void Main(string[] args)
     {
         var builder = WebApplication.CreateBuilder(args);
-        var service = builder.Services;
+        var services = builder.Services;
 
-        builder.Services.AddControllers();
+        services.AddControllers();
         
-        builder.Services.AddEndpointsApiExplorer();
-        builder.Services.AddSwaggerGen();
+        // Extensions
+        services.AddDataContext(builder.Configuration
+            .GetConnectionString("DefaultConnectionString")!);
+        services.AddSwagger();
+        services.AddMappers();
+        services.AddValidation();
+        services.AddRepositories();
+        services.AddServices();
+        services.AddVersioning();
+        services.AddExceptionHandling();
+        services.AddTelemetry();
 
         var app = builder.Build();
 
-        // Configure the HTTP request pipeline.
-        if (app.Environment.IsDevelopment())
-        {
-            app.UseSwagger();
-            app.UseSwaggerUI();
-        }
-
+        app.UseMiddleware<ExceptionHandlerMiddleware>();
+        
+        app.UseSwagger();
+        app.UseSwaggerUI();
+        
         app.UseHttpsRedirection();
 
-        app.UseAuthorization();
-
-
+        app.MapPrometheusScrapingEndpoint();
+        
         app.MapControllers();
-
         app.Run();
     }
 }

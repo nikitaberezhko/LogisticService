@@ -6,7 +6,7 @@ using Services.Repositories.Interfaces;
 
 namespace Infrastructure.Repositories.Implementations;
 
-public class ContainerRepository(DbContext context) : IContainerRepository
+public class LocationRepository(DbContext context) : ILocationRepository
 {
     public async Task<Container> GetLocationAsync(Container container)
     {

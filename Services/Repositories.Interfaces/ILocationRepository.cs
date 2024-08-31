@@ -2,7 +2,7 @@ using Domain;
 
 namespace Services.Repositories.Interfaces;
 
-public interface IContainerRepository
+public interface ILocationRepository
 {
     Task<Container> GetLocationAsync(Container container);
 
