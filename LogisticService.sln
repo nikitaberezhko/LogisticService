@@ -10,6 +10,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Services", "Services\Servic
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebApi", "WebApi\WebApi.csproj", "{4C3F2698-4C1C-4AED-B4E8-59A229317850}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tests", "Tests\Tests.csproj", "{EB20FC06-9948-42E9-A940-359F791B5641}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -36,5 +38,9 @@ Global
 		{4C3F2698-4C1C-4AED-B4E8-59A229317850}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4C3F2698-4C1C-4AED-B4E8-59A229317850}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4C3F2698-4C1C-4AED-B4E8-59A229317850}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EB20FC06-9948-42E9-A940-359F791B5641}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EB20FC06-9948-42E9-A940-359F791B5641}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EB20FC06-9948-42E9-A940-359F791B5641}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EB20FC06-9948-42E9-A940-359F791B5641}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

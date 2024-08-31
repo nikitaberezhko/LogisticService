@@ -4,5 +4,5 @@ namespace WebApi.Models.Request;
 
 public class UpdateContainersListLocationRequest
 {
-    public List<UpdateContainerLocationApiModel> ContainersList { get; set; }
+    public List<UpdateLocationApiModel> ContainersList { get; set; }
 }

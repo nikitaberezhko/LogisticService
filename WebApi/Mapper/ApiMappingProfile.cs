@@ -12,25 +12,25 @@ public class ApiMappingProfile : Profile
     public ApiMappingProfile()
     {
         // Requests -> Request models
-        CreateMap<GetContainerLocationRequest, GetContainerLocationModel>()
+        CreateMap<GetContainerLocationRequest, GetLocationModel>()
             .ForMember(d => d.Id, map => map.MapFrom(c => c.Id));
         
         
-        CreateMap<GetContainersListLocationRequest, GetContainersListLocationModel>()
+        CreateMap<GetContainersListLocationRequest, GetContainersLocationModel>()
             .ForMember(d => d.IdsList, map => map.MapFrom(c => c.IdsList));
         
         
-        CreateMap<GetContainerListByOrderIdRequest, GetContainersListByOrderIdModel>()
+        CreateMap<GetContainerListByOrderIdRequest, GetContainersByOrderIdModel>()
             .ForMember(d => d.OrderId, map => map.MapFrom(c => c.OrderId));
         
         
-        CreateMap<UpdateContainerLocationRequest, UpdateContainerLocationModel>()
+        CreateMap<UpdateContainerLocationRequest, UpdateLocationModel>()
             .ForMember(d => d.Id, map => map.MapFrom(c => c.Id))
             .ForMember(d => d.Latitude, map => map.MapFrom(c => c.Latitude))
             .ForMember(d => d.Longitude, map => map.MapFrom(c => c.Longitude));
 
 
-        CreateMap<UpdateContainerLocationApiModel, UpdateContainerLocationModel>()
+        CreateMap<UpdateLocationApiModel, UpdateLocationModel>()
             .ForMember(d => d.Id, map => map.MapFrom(c => c.Id))
             .ForMember(d => d.Latitude, map => map.MapFrom(c => c.Latitude))
             .ForMember(d => d.Longitude, map => map.MapFrom(c => c.Longitude));
