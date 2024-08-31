@@ -3,6 +3,7 @@ using Domain;
 using Services.Models.Request;
 using Services.Models.Response;
 using Services.Repositories.Interfaces;
+using Services.Services.Interfaces;
 using Services.Validation;
 
 namespace Services.Services.Implementations;
@@ -10,9 +11,9 @@ namespace Services.Services.Implementations;
 public class ContainerService(
     IMapper mapper,
     IContainerRepository containerRepository,
-    ContainerValidator validator)
+    ContainerValidator validator) : IContainerService
 {
-    public async Task<ContainerModel> GetLocation(GetContainerLocationModel model)
+    public async Task<ContainerModel> GetLocation(GetLocationModel model)
     {
         await validator.ValidateAsync(model);
         
@@ -24,7 +25,7 @@ public class ContainerService(
     }
 
     public async Task<List<ContainerModel>> GetContainersLocation(
-        GetContainersListLocationModel model)
+        GetContainersLocationModel model)
     {
         await validator.ValidateAsync(model);
         
@@ -38,7 +39,7 @@ public class ContainerService(
     }
 
     public async Task<List<ContainerModel>> GetContainersLocationByOrderId(
-        GetContainersListByOrderIdModel model)
+        GetContainersByOrderIdModel model)
     {
         await validator.ValidateAsync(model);
         
@@ -49,7 +50,7 @@ public class ContainerService(
         return result;
     }
 
-    public async Task<ContainerModel> UpdateLocation(UpdateContainerLocationModel model)
+    public async Task<ContainerModel> UpdateLocation(UpdateLocationModel model)
     {
         await validator.ValidateAsync(model);
 
@@ -61,7 +62,7 @@ public class ContainerService(
     }
 
     public async Task<List<ContainerModel>> UpdateContainersLocation(
-        UpdateContainersListLocationModel model)
+        UpdateContainersLocationModel model)
     {
         await validator.ValidateAsync(model);
 

@@ -1,6 +1,6 @@
 namespace Services.Models.Request;
 
-public class GetContainersListByOrderIdModel
+public class GetContainersByOrderIdModel
 {
     public Guid OrderId { get; set; }
 }

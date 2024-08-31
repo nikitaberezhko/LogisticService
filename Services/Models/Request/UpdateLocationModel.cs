@@ -1,6 +1,6 @@
-namespace Services.Models.OtherModels;
+namespace Services.Models.Request;
 
-public class UpdateContainerLocationModel
+public class UpdateLocationModel
 {
     public Guid Id { get; set; }
     

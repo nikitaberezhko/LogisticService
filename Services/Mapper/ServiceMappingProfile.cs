@@ -10,7 +10,7 @@ public class ServiceMappingProfile : Profile
     public ServiceMappingProfile()
     {
         // Request models -> Domain models
-        CreateMap<GetContainerLocationModel, Container>()
+        CreateMap<GetLocationModel, Container>()
             .ForMember(d => d.Id, map => map.MapFrom(c => c.Id))
             .ForMember(d => d.OrderId, map => map.Ignore())
             .ForMember(d => d.Latitude, map => map.Ignore())
@@ -18,7 +18,7 @@ public class ServiceMappingProfile : Profile
             .ForMember(d => d.LastUpdateTime, map => map.Ignore());
 
         
-        CreateMap<UpdateContainerLocationModel, Container>()
+        CreateMap<UpdateLocationModel, Container>()
             .ForMember(d => d.Id, map => map.MapFrom(c => c.Id))
             .ForMember(d => d.OrderId, map => map.Ignore())
             .ForMember(d => d.Latitude, map => map.MapFrom(c => c.Latitude))
@@ -26,7 +26,7 @@ public class ServiceMappingProfile : Profile
             .ForMember(d => d.LastUpdateTime, map => map.Ignore());
         
         
-        CreateMap<UpdateContainerLocationModel, Container>()
+        CreateMap<UpdateLocationModel, Container>()
             .ForMember(d => d.Id, map => map.MapFrom(c => c.Id))
             .ForMember(d => d.OrderId, map => map.Ignore())
             .ForMember(d => d.Latitude, map => map.MapFrom(c => c.Latitude))

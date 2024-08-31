@@ -1,6 +1,6 @@
 namespace Services.Models.Request;
 
-public class GetContainerLocationModel
+public class GetLocationModel
 {
     public Guid Id { get; set; }
 }
