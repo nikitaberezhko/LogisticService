@@ -22,6 +22,8 @@ public class Program
         services.AddServices();
         services.AddVersioning();
         services.AddExceptionHandling();
+        services.ConfigureMassTransit(builder.Configuration);
+        services.AddRefitClients(builder.Configuration);
         services.AddTelemetry();
 
         var app = builder.Build();

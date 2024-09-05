@@ -7,6 +7,6 @@ namespace Infrastructure.Refit.Clients;
 
 public interface IHubApi
 {
-    [Get("/api/v1/hubs/{request.Id}")]
+    [Get("/api/v1/hubs/{request.id}")]
     Task<CommonResponse<GetHubByIdResponse>> GetHubById(GetHubByIdRequest request);
 }

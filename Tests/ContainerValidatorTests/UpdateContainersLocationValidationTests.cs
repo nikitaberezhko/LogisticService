@@ -18,7 +18,6 @@ public class UpdateContainersLocationValidationTests
             new Mock<IValidator<GetLocationModel>>().Object,
             new Mock<IValidator<GetContainersLocationModel>>().Object,
             new Mock<IValidator<GetContainersLocationByOrderIdModel>>().Object,
-            new Mock<IValidator<UpdateLocationModel>>().Object,
             Provider.Get<IValidator<UpdateContainersLocationModel>>());  
     }
 

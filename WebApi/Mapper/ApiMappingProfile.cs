@@ -1,9 +1,10 @@
 using AutoMapper;
+using LogisticService.Contracts.OtherModels;
+using LogisticService.Contracts.Request;
+using LogisticService.Contracts.Response;
+using Services.Models.OtherModels;
 using Services.Models.Request;
 using Services.Models.Response;
-using WebApi.Models.OtherModels;
-using WebApi.Models.Request;
-using WebApi.Models.Response;
 
 namespace WebApi.Mapper;
 
@@ -22,15 +23,9 @@ public class ApiMappingProfile : Profile
         
         CreateMap<GetContainersLocationByOrderIdRequest, GetContainersLocationByOrderIdModel>()
             .ForMember(d => d.OrderId, map => map.MapFrom(c => c.OrderId));
-        
-        
-        CreateMap<UpdateLocationRequest, UpdateLocationModel>()
-            .ForMember(d => d.Id, map => map.MapFrom(c => c.Id))
-            .ForMember(d => d.Latitude, map => map.MapFrom(c => c.Latitude))
-            .ForMember(d => d.Longitude, map => map.MapFrom(c => c.Longitude));
 
 
-        CreateMap<UpdateLocationApiModel, UpdateLocationModel>()
+        CreateMap<UpdateLocationApiModel, ContainerUpdateModel>()
             .ForMember(d => d.Id, map => map.MapFrom(c => c.Id))
             .ForMember(d => d.Latitude, map => map.MapFrom(c => c.Latitude))
             .ForMember(d => d.Longitude, map => map.MapFrom(c => c.Longitude));
@@ -39,14 +34,6 @@ public class ApiMappingProfile : Profile
 
         // Response models -> Responses
         CreateMap<ContainerModel, GetLocationResponse>()
-            .ForMember(d => d.Id, map => map.MapFrom(c => c.Id))
-            .ForMember(d => d.OrderId, map => map.MapFrom(c => c.OrderId))
-            .ForMember(d => d.Latitude, map => map.MapFrom(c => c.Latitude))
-            .ForMember(d => d.Longitude, map => map.MapFrom(c => c.Longitude))
-            .ForMember(d => d.LastUpdateTime, map => map.MapFrom(c => c.LastUpdateTime));
-        
-        
-        CreateMap<ContainerModel, UpdateLocationResponse>()
             .ForMember(d => d.Id, map => map.MapFrom(c => c.Id))
             .ForMember(d => d.OrderId, map => map.MapFrom(c => c.OrderId))
             .ForMember(d => d.Latitude, map => map.MapFrom(c => c.Latitude))

@@ -1,12 +1,14 @@
 using Asp.Versioning;
 using FluentValidation;
 using Infrastructure.Bus.Implementations;
+using Infrastructure.Refit.Clients;
 using Infrastructure.Repositories.Implementations;
 using Infrastructure.Settings;
 using MassTransit;
 using Microsoft.EntityFrameworkCore;
 using OpenTelemetry.Metrics;
 using Persistence.EntityFramework;
+using Refit;
 using Services.Mapper;
 using Services.Models.Request;
 using Services.Repositories.Interfaces;
@@ -48,8 +50,6 @@ public static class ServiceCollectionExtensions
             GetContainersLocationValidator>();
         services.AddScoped<IValidator<GetContainersLocationByOrderIdModel>, 
             GetContainersLocationByOrderIdValidator>();
-        services.AddScoped<IValidator<UpdateLocationModel>, 
-            UpdateLocationValidator>();
         services.AddScoped<IValidator<UpdateContainersLocationModel>, 
             UpdateContainersLocationValidator>();
 
@@ -100,23 +100,23 @@ public static class ServiceCollectionExtensions
                     h.Password(rmqSettings.Password);
                 });
 
-                // cfg.ReceiveEndpoint("create-order", e =>
-                // {
-                //     e.ConfigureConsumer<CreateOrderConsumer>(context);
-                //     e.ExchangeType = "fanout";  
-                // });
-                //
-                // cfg.ReceiveEndpoint("update-order", e =>
-                // {
-                //     e.ConfigureConsumer<UpdateOrderConsumer>(context);
-                //     e.ExchangeType = "fanout";  
-                // });
-                //
-                // cfg.ReceiveEndpoint("delete-order", e =>
-                // {
-                //     e.ConfigureConsumer<DeleteOrderConsumer>(context);
-                //     e.ExchangeType = "fanout";  
-                // });
+                cfg.ReceiveEndpoint("logistic-create-order", e =>
+                {
+                    e.ConfigureConsumer<CreateOrderConsumer>(context);
+                    e.ExchangeType = "fanout";  
+                });
+                
+                cfg.ReceiveEndpoint("logistic-update-order", e =>
+                {
+                    e.ConfigureConsumer<UpdateOrderConsumer>(context);
+                    e.ExchangeType = "fanout";  
+                });
+                
+                cfg.ReceiveEndpoint("logistic-delete-order", e =>
+                {
+                    e.ConfigureConsumer<DeleteOrderConsumer>(context);
+                    e.ExchangeType = "fanout";  
+                });
             });
 
         });
@@ -167,6 +167,18 @@ public static class ServiceCollectionExtensions
                     });
             });
         
+        return services;
+    }
+
+    public static IServiceCollection AddRefitClients(this IServiceCollection services, 
+        IConfiguration configuration)
+    {
+        var refitSettings = configuration.GetSection("RefitClientSettings")
+            .Get<RefitClientSettings>();
+        
+        services.AddRefitClient<IHubApi>()
+            .ConfigureHttpClient(c => c.BaseAddress = new Uri(refitSettings!.HubApiUrl));
+
         return services;
     }
 }

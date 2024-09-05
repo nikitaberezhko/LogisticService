@@ -13,8 +13,6 @@ public interface ILocationService
     Task<List<ContainerModel>> GetContainersLocationByOrderId(
         GetContainersLocationByOrderIdModel model);
 
-    Task<ContainerModel> UpdateLocation(UpdateLocationModel model);
-
     Task<List<ContainerModel>> UpdateContainersLocation(
         UpdateContainersLocationModel model);
 }

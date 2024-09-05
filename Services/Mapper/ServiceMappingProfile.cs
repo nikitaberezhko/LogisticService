@@ -1,5 +1,6 @@
 using AutoMapper;
 using Domain;
+using Services.Models.OtherModels;
 using Services.Models.Request;
 using Services.Models.Response;
 
@@ -26,7 +27,7 @@ public class ServiceMappingProfile : Profile
             .ForMember(d => d.LastUpdateTime, map => map.Ignore());
         
         
-        CreateMap<UpdateLocationModel, Container>()
+        CreateMap<ContainerUpdateModel, Container>()
             .ForMember(d => d.Id, map => map.MapFrom(c => c.Id))
             .ForMember(d => d.OrderId, map => map.Ignore())
             .ForMember(d => d.Latitude, map => map.MapFrom(c => c.Latitude))

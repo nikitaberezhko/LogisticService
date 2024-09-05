@@ -1,12 +1,13 @@
 using Asp.Versioning;
 using AutoMapper;
 using CommonModel.Contracts;
+using LogisticService.Contracts.OtherModels;
+using LogisticService.Contracts.Request;
+using LogisticService.Contracts.Response;
 using Microsoft.AspNetCore.Mvc;
+using Services.Models.OtherModels;
 using Services.Models.Request;
 using Services.Services.Interfaces;
-using WebApi.Models.OtherModels;
-using WebApi.Models.Request;
-using WebApi.Models.Response;
 
 namespace WebApi.Controllers;
 
@@ -44,9 +45,9 @@ public class LocationController(
         return response;
     }
 
-    [HttpGet("orders/{id:guid}")]
+    [HttpGet("orders/{orderId:guid}")]
     public async Task<ActionResult<CommonResponse<GetContainersLocationByOrderIdResponse>>>
-        GetContainersLocationByOrderId([FromRoute]GetContainersLocationByOrderIdRequest request)
+        GetContainersLocationByOrderId([FromRoute] GetContainersLocationByOrderIdRequest request)
     {
         var result = await locationService
             .GetContainersLocationByOrderId(
@@ -60,25 +61,13 @@ public class LocationController(
         return response;
     }
     
-    // todo: check
-    [HttpPut("{request.Id:guid}")]
-    public async Task<ActionResult<CommonResponse<UpdateLocationResponse>>>
-        UpdateLocation(UpdateLocationRequest request)
-    {
-        var result = await locationService
-            .UpdateLocation(mapper.Map<UpdateLocationModel>(request));
-        var response = new CommonResponse<UpdateLocationResponse> 
-            { Data = mapper.Map<UpdateLocationResponse>(result) };
-        
-        return response;
-    }
-    
     [HttpPut]
     public async Task<ActionResult<CommonResponse<UpdateContainersLocationResponse>>>
         UpdateContainersLocation(UpdateContainersLocationRequest request)
     {
         var result = await locationService
-            .UpdateContainersLocation(mapper.Map<UpdateContainersLocationModel>(request));
+            .UpdateContainersLocation(new UpdateContainersLocationModel
+                { ContainersList = mapper.Map<List<ContainerUpdateModel>>(request.ContainersList) });
         var response = new CommonResponse<UpdateContainersLocationResponse>
         {
             Data = new UpdateContainersLocationResponse 

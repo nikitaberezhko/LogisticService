@@ -18,6 +18,7 @@ public class UpdateOrderConsumer(
         var containerIds = context.Message.ContainerIds;
         var orderId = context.Message.OrderId;
         var newHubId = context.Message.HubStartId;
+        var time = DateTime.UtcNow;
         
         var startLocation = 
             await hubApi.GetHubById(new GetHubByIdRequest { Id = newHubId });
@@ -28,9 +29,10 @@ public class UpdateOrderConsumer(
                 OrderId = orderId,
                 Latitude = startLocation.Data!.Latitude,
                 Longitude = startLocation.Data!.Longitude,
-                LastUpdateTime = DateTime.UtcNow
+                LastUpdateTime = time
             }).ToList(),
-            orderId: orderId);
+            orderId: orderId,
+            lastUpdateTime: time);
         
         logger.LogInformation("\"Order updated message\" received for order with id: {id}", orderId);
     }

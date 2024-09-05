@@ -38,25 +38,6 @@ public class LocationRepository(DbContext context) : ILocationRepository
         return existingContainers;
     }
 
-    public async Task<Container> UpdateLocationAsync(Container container)
-    {
-        var existingContainer = await context.Set<Container>().FirstOrDefaultAsync(x => x.Id == container.Id);
-        if (existingContainer != null)
-        {
-            await context.Set<Container>().Where(x => x.Id == container.Id)
-                .ExecuteUpdateAsync(s => s
-                    .SetProperty(p => p.Latitude, container.Latitude)
-                    .SetProperty(p => p.Longitude, container.Longitude));
-        }
-        
-        throw new InfrastructureException
-        {
-            Title = "Container not found",
-            Message = "Container with this id not found",
-            StatusCode = StatusCodes.Status404NotFound
-        };
-    }
-
     public async Task<List<Container>> UpdateContainersLocationAsync(List<Container> containers)
     {
         var existingContainers = await context.Set<Container>()
@@ -65,6 +46,8 @@ public class LocationRepository(DbContext context) : ILocationRepository
         {
             UpdateLocationFields(containers, existingContainers);
             await context.SaveChangesAsync();
+            
+            return existingContainers;
         }
         
         throw new InfrastructureException
@@ -80,22 +63,32 @@ public class LocationRepository(DbContext context) : ILocationRepository
         var existingContainers = await context.Set<Container>()
             .Where(x => containers.Select(e => e.Id).Contains(x.Id) || x.OrderId == orderId).ToListAsync();
         if (existingContainers.Count != 0)
+        {
             context.RemoveRange(existingContainers);
+            await context.SaveChangesAsync();
+        }
         
         await context.Set<Container>().AddRangeAsync(containers);
         await context.SaveChangesAsync();
     }
 
-    public async Task UpdateContainersAsync(List<Container> containers, Guid orderId)
+    public async Task UpdateContainersAsync(List<Container> containers, Guid orderId, DateTime lastUpdateTime)
     {
         var uselessContainers = await context.Set<Container>()
             .Where(x => !containers.Select(e => e.Id).Contains(x.Id) && x.OrderId == orderId).ToListAsync();
         if (uselessContainers.Count != 0)
+        {
             context.RemoveRange(uselessContainers);
-
-        var existingContainers = await context.Set<Container>()
-            .Where(x => containers.Select(e => e.Id).Contains(x.Id) || x.OrderId == orderId).ToListAsync();
-        var newContainers = existingContainers.Where(x => !containers.Select(e => e.Id).Contains(x.Id)).ToList();
+            await context.SaveChangesAsync(); 
+        }
+        
+        await context.Set<Container>()
+            .Where(x => containers.Select(e => e.Id).Contains(x.Id))
+            .ExecuteUpdateAsync(s => s
+                .SetProperty(p => p.OrderId, orderId)
+                .SetProperty(p => p.LastUpdateTime, lastUpdateTime));
+        
+        var newContainers = containers.Where(x => context.Set<Container>().Select(x => x.Id).Contains(x.Id) == false).ToList();
         await context.Set<Container>().AddRangeAsync(newContainers);
         await context.SaveChangesAsync();
     }
@@ -105,7 +98,10 @@ public class LocationRepository(DbContext context) : ILocationRepository
         var existingContainers = await context.Set<Container>()
             .Where(x => containers.Select(e => e.Id).Contains(x.Id) || x.OrderId == orderId).ToListAsync();
         if (existingContainers.Count != 0)
+        {
             context.RemoveRange(existingContainers);
+            await context.SaveChangesAsync();
+        }
     }
     
     

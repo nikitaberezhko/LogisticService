@@ -9,7 +9,6 @@ public class ContainerValidator(
     IValidator<GetLocationModel> getLocationValidator,
     IValidator<GetContainersLocationModel> getContainersLocationValidator,
     IValidator<GetContainersLocationByOrderIdModel> getContainersByOrderIdValidator,
-    IValidator<UpdateLocationModel> updateLocationValidator,
     IValidator<UpdateContainersLocationModel> updateContainersLocationValidator)
 {
     public async Task<bool> ValidateAsync(GetLocationModel model)
@@ -33,15 +32,6 @@ public class ContainerValidator(
     public async Task<bool> ValidateAsync(GetContainersLocationByOrderIdModel model)
     {
         var validationResult = await getContainersByOrderIdValidator.ValidateAsync(model);
-        if (!validationResult.IsValid)
-            ThrowWithStandartMessage();
-        
-        return true;
-    }
-    
-    public async Task<bool> ValidateAsync(UpdateLocationModel model)
-    {
-        var validationResult = await updateLocationValidator.ValidateAsync(model);
         if (!validationResult.IsValid)
             ThrowWithStandartMessage();
         

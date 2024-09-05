@@ -50,17 +50,6 @@ public class LocationService(
         return result;
     }
 
-    public async Task<ContainerModel> UpdateLocation(UpdateLocationModel model)
-    {
-        await validator.ValidateAsync(model);
-
-        var container = await locationRepository
-            .UpdateLocationAsync(mapper.Map<Container>(model));
-        var result = mapper.Map<ContainerModel>(container);
-
-        return result;
-    }
-
     public async Task<List<ContainerModel>> UpdateContainersLocation(
         UpdateContainersLocationModel model)
     {

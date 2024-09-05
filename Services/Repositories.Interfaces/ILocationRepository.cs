@@ -10,13 +10,11 @@ public interface ILocationRepository
 
     Task<List<Container>> GetContainersLocationByOrderIdAsync(Guid orderId);
 
-    Task<Container> UpdateLocationAsync(Container container);
-
     Task<List<Container>> UpdateContainersLocationAsync(List<Container> containers);
 
     Task CreateContainersAsync(List<Container> containers, Guid orderId);
 
-    Task UpdateContainersAsync(List<Container> containers, Guid orderId);
+    Task UpdateContainersAsync(List<Container> containers, Guid orderId, DateTime lastUpdateTime);
     
     Task DeleteContainersAsync(List<Container> containers, Guid orderId);
 }
