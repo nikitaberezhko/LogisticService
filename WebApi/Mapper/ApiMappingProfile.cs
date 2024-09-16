@@ -41,7 +41,7 @@ public class ApiMappingProfile : Profile
             .ForMember(d => d.LastUpdateTime, map => map.MapFrom(c => c.LastUpdateTime));
         
         
-        CreateMap<ContainerModel, ContainerApiModel>()
+        CreateMap<ContainerModel, LogisticContainerApiModel>()
             .ForMember(d => d.Id, map => map.MapFrom(c => c.Id))
             .ForMember(d => d.OrderId, map => map.MapFrom(c => c.OrderId))
             .ForMember(d => d.Latitude, map => map.MapFrom(c => c.Latitude))

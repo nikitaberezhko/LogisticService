@@ -39,7 +39,7 @@ public class LocationController(
         var response = new CommonResponse<GetContainersLocationResponse>
         {
             Data = new GetContainersLocationResponse 
-                { Containers = mapper.Map<List<ContainerApiModel>>(result)}
+                { Containers = mapper.Map<List<LogisticContainerApiModel>>(result)}
         };
         
         return response;
@@ -55,7 +55,7 @@ public class LocationController(
         var response = new CommonResponse<GetContainersLocationByOrderIdResponse>
         {
             Data = new GetContainersLocationByOrderIdResponse
-            { Containers = mapper.Map<List<ContainerApiModel>>(result) }
+            { Containers = mapper.Map<List<LogisticContainerApiModel>>(result) }
         };
         
         return response;
@@ -71,7 +71,7 @@ public class LocationController(
         var response = new CommonResponse<UpdateContainersLocationResponse>
         {
             Data = new UpdateContainersLocationResponse 
-                { Containers = mapper.Map<List<ContainerApiModel>>(result) }
+                { Containers = mapper.Map<List<LogisticContainerApiModel>>(result) }
         };
         
         return response;
