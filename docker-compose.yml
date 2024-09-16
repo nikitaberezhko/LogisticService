@@ -2,21 +2,21 @@
   deploy-dev:
     driver: bridge
 services:
-#  logistic:
-#    container_name: logistic
-#    image: logistic
-#    build:
-#      context: .
-#      dockerfile: WebApi/Dockerfile
-#    environment:
-#      ASPNETCORE_ENVIRONMENT: Production
-#      ASPNETCORE_HTTP_PORTS: 8085
-#    ports:
-#      - "8085:8085"
-#    networks:
-#      - deploy-dev
-#    depends_on:
-#      - logistic-db
+  logistic:
+    container_name: logistic
+    image: logistic
+    build:
+      context: .
+      dockerfile: WebApi/Dockerfile
+    environment:
+      ASPNETCORE_ENVIRONMENT: Production
+      ASPNETCORE_HTTP_PORTS: 8085
+    ports:
+      - "8085:8085"
+    networks:
+      - deploy-dev
+    depends_on:
+      - logistic-db
   logistic-db:
     container_name: logistic-db
     image: postgres:latest
