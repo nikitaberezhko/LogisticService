@@ -9,6 +9,7 @@ using Microsoft.EntityFrameworkCore;
 using OpenTelemetry.Metrics;
 using Persistence.EntityFramework;
 using Refit;
+using Serilog;
 using Services.Mapper;
 using Services.Models.Request;
 using Services.Repositories.Interfaces;
@@ -64,6 +65,16 @@ public static class ServiceCollectionExtensions
             typeof(ServiceMappingProfile),
             typeof(ApiMappingProfile));
         
+        return services;
+    }
+
+    public static IServiceCollection ConfigureSerilog(this IServiceCollection services)
+    {
+        Log.Logger = new LoggerConfiguration()
+            .WriteTo.Console()
+            .CreateLogger();
+        services.AddSerilog();
+
         return services;
     }
     

@@ -9,7 +9,6 @@ public class Program
     {
         var builder = WebApplication.CreateBuilder(args);
         var services = builder.Services;
-        builder.AddSerilog();
 
         services.AddControllers();
         
@@ -26,6 +25,7 @@ public class Program
         services.ConfigureMassTransit(builder.Configuration);
         services.AddRefitClients(builder.Configuration);
         services.AddTelemetry();
+        services.ConfigureSerilog();
 
         var app = builder.Build();
 
